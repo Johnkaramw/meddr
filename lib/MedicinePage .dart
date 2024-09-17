@@ -18,12 +18,19 @@ class _MedicinePageState extends State<MedicinePage> {
     'دواء 3': 100,
   };
 
+  final Map<String, double> medicinePrices = {
+    'دواء 1': 50.0,
+    'دواء 2': 75.0,
+    'دواء 3': 100.0,
+  };
+
   String searchQuery = ''; // متغير لتخزين النص المدخل في البحث
 
-  void addMedicine(String name, int quantity) {
+  void addMedicine(String name, int quantity, double price) {
     setState(() {
       medicines.add(name);
       medicineQuantities[name] = quantity;
+      medicinePrices[name] = price;
     });
   }
 
@@ -75,6 +82,7 @@ class _MedicinePageState extends State<MedicinePage> {
         itemBuilder: (context, index) {
           String medicineName = filteredMedicines[index];
           int remaining = medicineQuantities[medicineName]!;
+          double price = medicinePrices[medicineName]!;
           return Card(
             color: Colors.teal[50],
             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -84,7 +92,7 @@ class _MedicinePageState extends State<MedicinePage> {
                 style: TextStyle(fontSize: screenWidth * 0.05),
               ),
               subtitle: Text(
-                'المتبقي: $remaining',
+                'المتبقي: $remaining\nالسعر: $price جنيه',
                 style: TextStyle(fontSize: screenWidth * 0.04),
               ),
               trailing: IconButton(
@@ -111,6 +119,7 @@ class _MedicinePageState extends State<MedicinePage> {
   void _showAddMedicineDialog() {
     String medicineName = '';
     int quantity = 0;
+    double price = 0.0;
 
     showDialog(
       context: context,
@@ -133,6 +142,13 @@ class _MedicinePageState extends State<MedicinePage> {
                   quantity = int.tryParse(value) ?? 0;
                 },
               ),
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(hintText: 'السعر'),
+                onChanged: (value) {
+                  price = double.tryParse(value) ?? 0.0;
+                },
+              ),
             ],
           ),
           actions: [
@@ -144,8 +160,8 @@ class _MedicinePageState extends State<MedicinePage> {
             ),
             TextButton(
               onPressed: () {
-                if (medicineName.isNotEmpty && quantity > 0) {
-                  addMedicine(medicineName, quantity);
+                if (medicineName.isNotEmpty && quantity > 0 && price > 0) {
+                  addMedicine(medicineName, quantity, price);
                 }
                 Navigator.of(context).pop();
               },
