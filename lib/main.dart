@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:meddr/MedicinePage%20.dart';
+import 'package:meddr/medicine_page.dart';
+import 'package:meddr/deficiency_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // التأكد من تهيئة Flutter
@@ -11,7 +12,12 @@ class VetApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // إزالة علامة الـ Debug
-      home: DoctorProfilePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => DoctorProfilePage(),
+        '/medicine': (context) => MedicinePage(),
+        '/deficiency': (context) => DeficiencyPage(),
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.teal)
             .copyWith(secondary: Colors.orangeAccent),
@@ -22,8 +28,8 @@ class VetApp extends StatelessWidget {
 
 class DoctorProfilePage extends StatelessWidget {
   final String doctorName = "د. أحمد سعيد";
-  final String phoneNumber = "123456789";
-  final String clinicLocation = "القاهرة، مصر";
+  final String phoneNumber = "01206256448";
+  final String clinicLocation = " القاهرة ، سوهاج ، طما ";
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +37,14 @@ class DoctorProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'الصفحة الشخصية للطبيب',
-          style: TextStyle(
-            color: Color.fromARGB(255, 38, 236, 11),
-            fontSize: 20,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 28.0), // تعديل المسافة هنا
+          child: const Text(
+            'DoseDiary',
+            style: TextStyle(
+              color: Color.fromARGB(255, 125, 193, 238),
+              fontSize: 30,
+            ),
           ),
         ),
         centerTitle: true, // لجعل العنوان في منتصف الـ AppBar
@@ -43,16 +52,16 @@ class DoctorProfilePage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  radius: screenWidth * 0.2,
-                  backgroundImage: AssetImage('assets/download.png'),
+                  radius: screenWidth * 0.4,
+                  backgroundImage: const AssetImage('assets/لوجو.jpg'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   doctorName,
                   style: TextStyle(
@@ -62,7 +71,7 @@ class DoctorProfilePage extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   "رقم الجوال: $phoneNumber",
                   style: TextStyle(
@@ -71,26 +80,26 @@ class DoctorProfilePage extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  "أماكن العيادة: $clinicLocation",
+                  "أماكن الصيدلية: $clinicLocation",
                   style: TextStyle(
                     fontSize: screenWidth * 0.05,
                     color: Colors.teal[600],
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(builder: (context) => MedicinePage()),
+                      '/medicine', // استخدم المسار المسجل
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 24.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
                     child: Text(
                       'ابدأ',
                       style: TextStyle(fontSize: screenWidth * 0.05),
